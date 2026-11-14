@@ -7,6 +7,7 @@ function open(path:string){window.history.replaceState({},'',path);return render
 describe('product comparison',()=>{
  it('selects products, enforces the limit, compares differences and clears',async()=>{
   const user=userEvent.setup();open('/products')
+  expect(screen.queryByRole('link',{name:/Compare products/})).not.toBeInTheDocument()
   for(const name of ['Atlas 75','Slate TKL','Arc 98'])await user.click(screen.getByRole('button',{name:'Compare '+name,exact:true}))
   expect(screen.getByRole('button',{name:'Compare Drift 60',exact:true})).toBeDisabled()
   expect(screen.getByRole('button',{name:'Remove Atlas 75 from comparison'})).toHaveAttribute('aria-pressed','true')
@@ -20,6 +21,7 @@ describe('product comparison',()=>{
   expect(JSON.parse(localStorage.getItem(COMPARISON_KEY)!)).toEqual(['atlas','arc'])
   await user.click(screen.getByRole('button',{name:'Clear comparison'}))
   expect(screen.getByText('Your comparison is empty. Add products from the collection.')).toBeInTheDocument()
+  expect(screen.queryByRole('link',{name:/Compare products/})).not.toBeInTheDocument()
  })
  it('restores valid unique products and handles different categories',()=>{
   localStorage.setItem(COMPARISON_KEY,JSON.stringify(['atlas','atlas','missing',null,'chalk']))
