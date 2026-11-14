@@ -1,13 +1,20 @@
 ﻿ØNYX — PRODUCT DESCRIPTIONS & IMAGE BRIEF
 
-These are fictional portfolio products. The descriptions below match the current catalog; the suggested appearance is art direction for the replacement images. Branding is temporary.
+These are fictional portfolio products. The descriptions below match the current catalog; the suggested appearance is art direction for the 
+replacement images. Branding is temporary.
 
 SHARED PHOTO STYLE
-Premium, minimalist studio photography with soft directional light, realistic materials, crisp detail, and restrained shadows. Use a consistent dark charcoal or neutral background, with no text overlays, watermarks, or unrelated props. Keep the whole product visible with room around it for cropping.
+Premium, minimalist studio photography with soft directional light, realistic materials, crisp detail, and restrained shadows. 
+Use a consistent dark charcoal or neutral background, with no text overlays, watermarks, or unrelated props. Keep the whole product 
+visible with room around it for cropping.
 
-For each product, aim for a three-quarter hero view and a top-down or detail view. Ideally provide both views for every named variant. Landscape images around 1600 x 1100 pixels work well; keep the product centered so it also crops cleanly on mobile. PNG or high-quality WebP/JPEG is fine. Suggested filenames: product-id-variant-hero and product-id-variant-detail (for example atlas-sage-hero.webp).
+For each product, aim for a top-down or detail view. Ideally provide for every named variant. 
+Landscape images around 1600 x 1100 pixels work well; keep the product centered so it also crops cleanly on mobile. PNG or high-quality 
+WebP/JPEG is fine. Suggested filenames: number, product name (for example 01_atlas_75.webp).
 
-For keyboards, use US ANSI legends and the correct layout. Prebuilt keyboards should have switches and keycaps installed. Barebones kits should clearly show an empty switch plate, PCB sockets, and installed stabilizers, without switches or keycaps. For keycap sets, show loose keys or a complete kit; if showing them on a keyboard, make it clear that the keyboard is only a display prop.
+For keyboards, use US ANSI legends and the correct layout. Prebuilt keyboards should have switches and keycaps installed. Barebones kits 
+should clearly show an empty switch plate, PCB sockets, and installed stabilizers, without switches or keycaps. For keycap sets, show loose 
+keys or a complete kit; if showing them on a keyboard, make it clear that the keyboard is only a display prop.
 
 KEYBOARDS
 
