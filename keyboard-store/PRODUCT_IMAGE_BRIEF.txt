@@ -1,0 +1,135 @@
+﻿ØNYX — PRODUCT DESCRIPTIONS & IMAGE BRIEF
+
+These are fictional portfolio products. The descriptions below match the current catalog; the suggested appearance is art direction for the replacement images. Branding is temporary.
+
+SHARED PHOTO STYLE
+Premium, minimalist studio photography with soft directional light, realistic materials, crisp detail, and restrained shadows. Use a consistent dark charcoal or neutral background, with no text overlays, watermarks, or unrelated props. Keep the whole product visible with room around it for cropping.
+
+For each product, aim for a three-quarter hero view and a top-down or detail view. Ideally provide both views for every named variant. Landscape images around 1600 x 1100 pixels work well; keep the product centered so it also crops cleanly on mobile. PNG or high-quality WebP/JPEG is fine. Suggested filenames: product-id-variant-hero and product-id-variant-detail (for example atlas-sage-hero.webp).
+
+For keyboards, use US ANSI legends and the correct layout. Prebuilt keyboards should have switches and keycaps installed. Barebones kits should clearly show an empty switch plate, PCB sockets, and installed stabilizers, without switches or keycaps. For keycap sets, show loose keys or a complete kit; if showing them on a keyboard, make it clear that the keyboard is only a display prop.
+
+KEYBOARDS
+
+01. ATLAS 75 | ØNYX | Product ID: atlas
+What it is: A premium 75% wireless mechanical keyboard with an aluminum case, gasket mount, and installed linear switches and keycaps.
+What it should look like: A substantial but compact board with a function row, dedicated arrow keys, and a small navigation column; no number pad. Matte anodized aluminum, gently rounded corners, and understated PBT-style keycaps. Keep the design clean without large logos or strong RGB effects.
+Variants: Sage — muted gray-green case with coordinated green/neutral keys. Sand — warm beige case with ivory and taupe keys.
+Key image detail: Show the case thickness and a close-up of the textured keycaps.
+
+02. SLATE TKL | ØNYX | Product ID: slate
+What it is: A wired aluminum tenkeyless keyboard with tactile switches, dedicated navigation keys, and white backlighting.
+What it should look like: A traditional TKL layout with a function row, separated navigation block, and inverted-T arrow cluster; no number pad. Broad, precise aluminum edges and a refined industrial finish. White lighting should be subtle, rather than a bright gaming effect.
+Variants: Graphite — dark charcoal case with dark gray keys. Silver — satin silver case with light gray keys.
+Key image detail: A three-quarter angle showing the separated navigation block and metal finish.
+
+03. DRIFT 60 | FORM Studio | Product ID: drift
+What it is: A lightweight 60% wireless keyboard with an ABS polymer case, installed linear switches, and PBT keycaps.
+What it should look like: A small, portable rectangular keyboard with slim borders and softly rounded corners. No separate function row, arrow cluster, navigation block, or number pad. A matte polymer finish should distinguish it from the heavier aluminum boards.
+Variants: Sage — soft sage case with cream/green keys. Cream — warm off-white case with ivory keys and a few muted beige accents.
+Key image detail: Emphasize the small footprint and slightly rounded case.
+
+04. ARC 98 | Fieldworks | Product ID: arc
+What it is: A compact 98% wireless mechanical keyboard with a number pad, ABS case, linear switches, and PBT keycaps.
+What it should look like: An almost full-size keyboard compressed into a tidy footprint. Include the function row, arrow keys, and a right-hand number pad with narrow gaps between sections. Matte case, understated legends, and restrained accent keys.
+Variants: Olive — muted olive-green case with cream and olive keys. Stone — warm gray case with light gray keys.
+Key image detail: A top-down view that makes the compact number-pad layout obvious.
+
+BAREBONES KITS
+
+05. FORMA 65 KIT | FORM Studio | Product ID: forma
+What it is: A wired 65% aluminum barebones kit with a gasket mount, polycarbonate plate, PCB, and installed stabilizers. Switches and keycaps are purchased separately.
+What it should look like: A compact metal chassis with arrow keys and a narrow navigation column, without a function row or number pad. Show empty switch openings and sockets through a pale translucent plate, with stabilizers visible at the larger keys.
+Variants: Forest — deep forest-green aluminum. Limestone — warm pale gray aluminum.
+Key image detail: A close view of the empty plate and stabilizers, clearly identifying this as a kit.
+
+06. MONO 75 KIT | ØNYX | Product ID: mono
+What it is: A wired 75% aluminum barebones kit with an FR4 plate and a rotary volume knob. Includes the case, PCB, plate, and stabilizers, but no switches or keycaps.
+What it should look like: A compact chassis with function-row positions, arrow-key positions, and a small knurled metal knob at the top right. Expose the dark FR4 plate, empty switch openings, and installed stabilizers. Clean machined edges and a solid premium build.
+Variants: Pine — dark pine-green aluminum. Bone — warm ivory/off-white aluminum.
+Key image detail: Show the volume knob and empty switch plate together.
+
+07. PEBBLE 60 KIT | FORM Studio | Product ID: pebble
+What it is: A 60% barebones keyboard kit with a translucent polycarbonate case and plate. Includes the PCB and stabilizers; switches and keycaps are not included.
+What it should look like: A compact, softly rounded case with a frosted translucent shell. The PCB should be subtly visible through the body. No separate function row, arrow cluster, or number pad. Keep the switch plate empty.
+Variants: Smoke — translucent smoky gray. Frost — translucent milky white.
+Key image detail: Use soft edge lighting to reveal the case translucency without an exaggerated glow.
+
+SWITCHES
+
+08. MOSS LINEAR | Fieldworks | Product ID: moss
+What it is: A pack of 70 factory-lubricated, 5-pin MX-compatible linear switches, available in 45g and 55g actuation weights.
+What it should look like: Small square mechanical switches with muted moss-green lower housings, lightly translucent upper housings, and pale green MX cross-shaped stems. Show a small arranged group rather than trying to fit all 70 into the hero image.
+Variants: 45g and 55g. Keep the housing design the same; weight variants need not look visibly different.
+Key image detail: A macro view showing the cross-shaped stem; a secondary underside view can show the five-pin mount.
+
+09. EMBER TACTILE | ØNYX | Product ID: ember
+What it is: A pack of 70 factory-lubricated, 5-pin MX tactile switches with 62g or 67g actuation weights.
+What it should look like: Translucent smoky housings with warm burnt-orange or copper-colored stems and a darker lower housing. The accent color should distinguish them from the green linear switches without looking neon.
+Variants: 62g and 67g, with a consistent exterior design.
+Key image detail: A tight group of switches with one enlarged foreground switch showing the stem and housing clips.
+
+10. HUSH SILENT | Fieldworks | Product ID: hush
+What it is: A pack of 70 factory-lubricated silent linear switches with dampened stems, a 5-pin MX mount, and 50g or 60g actuation weights.
+What it should look like: Soft gray or milky translucent housings with muted lavender-gray stems. A calm, restrained palette to suggest the quiet typing character. If using an exploded detail, keep it mechanically plausible and show small stem dampeners.
+Variants: 50g and 60g, with the same exterior design.
+Key image detail: A macro product view with soft lighting; no sound waves or decorative graphics.
+
+11. REED SPEED | FORM Studio | Product ID: reed
+What it is: A pack of 70 light, short-travel linear switches with a 5-pin MX mount, factory lubrication, and 40g or 45g actuation weights.
+What it should look like: Clear or lightly frosted upper housings, subdued cream lower housings, and pale reed-yellow stems. Crisp, compact components arranged neatly on the same studio background as the other switches.
+Variants: 40g and 45g, with the same exterior design.
+Key image detail: A close-up of the stem and transparent housing, with a few additional switches behind it.
+
+KEYCAP SETS
+
+12. CHALK PBT | Fieldworks | Product ID: chalk
+What it is: A 135-key dye-sublimated PBT keycap set in sculpted Cherry profile, compatible with MX cross stems and common ANSI layouts.
+What it should look like: Thick-walled, softly textured keycaps with simple dark gray legends. Show loose keys in a tidy kit arrangement or a neutral display board, plus a close-up revealing the sculpted row heights.
+Variants: Chalk — warm white keys with light gray modifiers. Oat — oatmeal/beige keys with slightly darker taupe modifiers.
+Key image detail: The fine matte texture and clean, readable legends.
+
+13. DUNE PBT | FORM Studio | Product ID: dune
+What it is: A 140-key dye-sublimated PBT set in uniform XDA profile, with broad key surfaces and MX-compatible stems.
+What it should look like: Rounded-square tops with shallow dishes and the same key height across every row. A calm desert palette with understated legends. Avoid the stepped row heights used by Cherry-profile sets.
+Variants: Dune — sandy beige alphas with warm tan modifiers. Clay — muted terracotta accents with pale sand alphas.
+Key image detail: A low side angle showing the uniform XDA height, plus a top-down set arrangement.
+
+14. NOIR DOUBLESHOT | ØNYX | Product ID: noir
+What it is: A 142-key doubleshot ABS keycap set in sculpted Cherry profile, with high-contrast light legends and MX-compatible stems.
+What it should look like: Clean monochrome keys with a smooth satin finish and crisp off-white legends. A classic premium appearance with no novelty graphics or colorful accents. Keep the row sculpting visible in a detail view.
+Variants: Charcoal — deep charcoal/near-black keys. Ash — medium cool gray keys.
+Key image detail: A macro view of the sharp doubleshot legends; an underside detail can show the two plastics.
+
+15. FERN BOTANICAL | Fieldworks | Product ID: fern
+What it is: A 132-key dye-sublimated PBT keycap set in sculpted OEM profile, with botanical accent keys and MX-compatible stems.
+What it should look like: Cream or pale green alphas paired with muted green modifiers. Include a few restrained leaf/fern illustrations on accent keys, such as Escape or the spacebar. Keep normal legends readable and the botanical details minimal.
+Variants: Fern — lighter fern-green modifiers and ivory alphas. Moss — deeper moss-green modifiers and pale sage alphas.
+Key image detail: A close-up of one botanical accent and the lightly textured PBT finish.
+
+ACCESSORIES
+
+16. COIL USB-C CABLE | ØNYX | Product ID: coil
+What it is: A braided USB-A to USB-C keyboard cable with a coiled section and a detachable metal connector; 1.8 m when extended.
+What it should look like: A neatly formed, evenly spaced coil with woven nylon sleeving and a simple cylindrical metal detachable connector. Both the USB-A and USB-C ends should be identifiable. Matte or satin metal hardware, without excessive branding.
+Variants: Sage — muted sage-green braid. Sand — warm beige braid.
+Key image detail: Show the entire cable with relaxed leads; add a close-up of the braid and detachable connector.
+
+17. WALNUT WRIST REST | FORM Studio | Product ID: rest
+What it is: A solid wood keyboard wrist rest, 320 x 80 x 18 mm, with a gentle slope, matte oil finish, and cork base. Offered in walnut and oak despite the current product name.
+What it should look like: A simple low rectangular block with softened edges, a slightly inclined top, and visible natural grain. No padding or fabric. Sized to accompany a 60%–75% keyboard rather than a full-size board.
+Variants: Walnut — rich medium-to-dark brown grain. Oak — lighter honey/tan grain.
+Key image detail: A low three-quarter shot showing the slope and wood grain; a secondary underside view should reveal the cork base.
+
+18. ESSENTIAL TOOL KIT | Fieldworks | Product ID: tools
+What it is: A keyboard maintenance kit containing a stainless steel wire keycap puller, switch puller, small cleaning brush, and tweezers in a cotton zip pouch. Lubricant is not included.
+What it should look like: A neatly arranged flat lay of four clearly distinguishable tools beside an open charcoal or natural cotton pouch. Stainless steel metal parts with understated dark handles where appropriate. The brush should be small and suitable for cleaning between keyboard switches.
+Variants: Standard only.
+Key image detail: Show every included item together. Do not add lubricant, spare switches, screwdrivers, or other items that are not part of the kit.
+
+DELIVERY CHECKLIST
+- Keep shapes, layout, materials, and colors consistent between views of the same product.
+- Provide separate files for color/material variants; switch weight variants may share images.
+- Prefer clean product-only hero images; lifestyle scenes can be additional images.
+- Avoid permanent brand marks while naming is temporary.
+- Use images you own, have permission to reuse, or generate for this project.

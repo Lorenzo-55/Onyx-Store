@@ -1,0 +1,36 @@
+﻿/* Motion is intentionally brief and never delays navigation or form actions. */
+:root{--ease-out:cubic-bezier(.22,1,.36,1);--motion-fast:180ms;--motion-normal:320ms}
+html,header,footer,.announcement,.philosophy,.order-summary,.demo-banner,.receipt,.filter-bar,.product-image,.language-control select,.checkout-form input,.checkout-form select,.filter-bar input,.filter-bar select,.search-label input{transition:background-color 240ms ease,color 240ms ease,border-color 240ms ease}
+.page-transition{animation:page-enter 320ms var(--ease-out) backwards}
+@keyframes page-enter{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+[data-scroll-reveal]{transition:opacity 500ms var(--ease-out),transform 500ms var(--ease-out)}
+[data-scroll-reveal=pending]{opacity:0;transform:translateY(18px)}
+[data-scroll-reveal=visible],[data-scroll-reveal=pending]:focus-within{opacity:1;transform:none}
+.product-grid>.product{animation:card-enter 380ms var(--ease-out) backwards;transition:transform 260ms var(--ease-out)}
+.product-grid>.product:nth-child(4n+2){animation-delay:35ms}.product-grid>.product:nth-child(4n+3){animation-delay:70ms}.product-grid>.product:nth-child(4n+4){animation-delay:105ms}
+@keyframes card-enter{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+.product-image>img{transition:transform 500ms var(--ease-out)}
+.quick-add{transition:background-color var(--motion-fast) ease,color var(--motion-fast) ease,transform 260ms var(--ease-out),border-color var(--motion-fast) ease}
+.button{transition:background-color var(--motion-fast) ease,color var(--motion-fast) ease,border-color var(--motion-fast) ease,box-shadow 260ms ease,transform 260ms var(--ease-out)}
+.button svg,.text-link svg,.category-list svg{transition:transform 260ms var(--ease-out)}
+.button:active:not(:disabled){transform:translateY(0) scale(.98)}
+.quantity button,.gallery-thumbs button,.filters button,.theme-toggle,.remove-item{transition:color var(--motion-fast) ease,background-color var(--motion-fast) ease,border-color var(--motion-fast) ease,opacity var(--motion-fast) ease,transform 220ms var(--ease-out)}
+.quantity button:active:not(:disabled),.theme-toggle:active{transform:scale(.93)}
+.gallery-thumbs button.active{transform:translateY(-2px)}
+.theme-toggle svg,.menu-button svg{animation:icon-enter 220ms var(--ease-out)}
+@keyframes icon-enter{from{opacity:.3;transform:rotate(-14deg) scale(.85)}to{opacity:1;transform:rotate(0) scale(1)}}
+.bag-label{display:inline-block;animation:bag-update 300ms var(--ease-out)}
+@keyframes bag-update{0%{transform:translateY(2px);opacity:.5}55%{transform:translateY(-1px)}100%{transform:none;opacity:1}}
+.quantity-value,.amount-update{display:inline-block;animation:value-update 220ms var(--ease-out)}
+@keyframes value-update{from{opacity:.45;transform:translateY(3px)}to{opacity:1;transform:none}}
+.cart-row{animation:card-enter 300ms var(--ease-out) backwards}
+.checkout-form .form-error,.empty-state{animation:feedback-enter 220ms ease-out}
+@keyframes feedback-enter{from{opacity:.3}to{opacity:1}}
+.button.is-added{animation:action-confirm 340ms var(--ease-out)}
+@keyframes action-confirm{0%{box-shadow:0 0 0 0 transparent}40%{box-shadow:0 0 0 4px color-mix(in srgb,var(--accent) 20%,transparent)}100%{box-shadow:0 0 0 0 transparent}}
+.confirmation-icon{animation:confirmation-enter 460ms var(--ease-out) backwards;animation-delay:80ms}
+@keyframes confirmation-enter{from{opacity:0;transform:translateY(8px) scale(.88)}to{opacity:1;transform:translateY(0) scale(1)}}
+@media(hover:hover) and (pointer:fine){.product:hover{transform:translateY(-4px)}.product:focus-within .quick-add,.product:hover .quick-add{transform:rotate(-25deg)}.button:hover:not(:disabled)>svg,.text-link:hover>svg,.category-list a:hover>svg{transform:translateX(3px)}.gallery-thumbs button:not(.active):hover{opacity:1;transform:translateY(-2px)}.quantity button:hover:not(:disabled){background:var(--selected)}}
+@media(max-width:700px){header nav{display:flex;position:absolute;top:112px;left:0;right:0;z-index:10;background:var(--surface);padding:25px;flex-direction:column;gap:24px;border-bottom:1px solid var(--border-strong);opacity:0;visibility:hidden;pointer-events:none;transform:translateY(-8px);transition:opacity 200ms ease,transform 240ms var(--ease-out),visibility 200ms}header nav.open{opacity:1;visibility:visible;pointer-events:auto;transform:none}header nav a{transition:color var(--motion-fast) ease,transform 240ms var(--ease-out)}header nav.open a{animation:menu-item-enter 260ms var(--ease-out) backwards}header nav.open a:nth-child(2){animation-delay:20ms}header nav.open a:nth-child(3){animation-delay:40ms}header nav.open a:nth-child(4){animation-delay:60ms}header nav.open a:nth-child(5){animation-delay:80ms}}
+@keyframes menu-item-enter{from{opacity:0;transform:translateY(-4px)}to{opacity:1;transform:none}}
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important;scroll-behavior:auto!important}[data-scroll-reveal=pending]{opacity:1!important;transform:none!important}.product:hover,.gallery-thumbs button.active{transform:none}.button:hover:not(:disabled)>svg,.text-link:hover>svg,.category-list a:hover>svg{transform:none}}
