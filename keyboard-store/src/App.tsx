@@ -1,4 +1,6 @@
-﻿import { useScrollReveal } from './hooks/useScrollReveal'
+import ComparisonProvider from './context/ComparisonProvider'
+import Compare from './pages/Compare'
+import { useScrollReveal } from './hooks/useScrollReveal'
 import PreferencesProvider from './context/PreferencesProvider'
 import { usePreferences } from './context/preferences-context'
 import { useEffect, useRef } from 'react'
@@ -23,7 +25,7 @@ function Store(){
  useScrollReveal(main,location.pathname)
  useEffect(()=>{
   const path=location.pathname
-  const page=path.startsWith('/products/')?getProduct(path.split('/')[2])?.name||'Product not found':({'/':'Find your kind of click.','/products':'The collection','/cart':'Your bag','/checkout':'Demo checkout','/order-confirmation':'Demo order complete'} as Record<string,string>)[path]||'Page not found'
+  const page=path.startsWith('/products/')?getProduct(path.split('/')[2])?.name||'Product not found':({'/':'Find your kind of click.','/products':'The collection','/compare':'Compare products','/cart':'Your bag','/checkout':'Demo checkout','/order-confirmation':'Demo order complete'} as Record<string,string>)[path]||'Page not found'
   document.title=`${BRAND} — ${t(page)}`
  },[location.pathname,t])
  useEffect(()=>{
@@ -31,7 +33,7 @@ function Store(){
   if(location.hash){document.getElementById(location.hash.slice(1))?.scrollIntoView()}
   else {window.scrollTo(0,0);main.current?.focus({preventScroll:true})}
  },[location.pathname,location.hash])
- return <><a className="skip" href="#main">{t("Skip to content")}</a><Navbar/><main id="main" tabIndex={-1} ref={main}><div className="page-transition" key={location.pathname}><Routes><Route path="/" element={<Home/>}/><Route path="/products" element={<Catalog/>}/><Route path="/products/:id" element={<ProductDetails/>}/><Route path="/cart" element={<Cart/>}/><Route path="/checkout" element={<Checkout/>}/><Route path="/order-confirmation" element={<OrderConfirmation/>}/><Route path="*" element={<section className="section empty-state"><p className="eyebrow">{t("404 / OFF THE BEATEN PATH")}</p><h1>{t("Nothing here. Yet.")}</h1><p>{t("Let's find your way back to the good stuff.")}</p><Link className="button primary" to="/products">{t("Explore the collection →")}</Link></section>}/></Routes></div></main><Footer/><div className="sr-only" role="status" aria-live="polite">{notice}</div></>
+ return <><a className="skip" href="#main">{t("Skip to content")}</a><Navbar/><main id="main" tabIndex={-1} ref={main}><div className="page-transition" key={location.pathname}><Routes><Route path="/" element={<Home/>}/><Route path="/products" element={<Catalog/>}/><Route path="/products/:id" element={<ProductDetails/>}/><Route path="/compare" element={<Compare/>}/><Route path="/cart" element={<Cart/>}/><Route path="/checkout" element={<Checkout/>}/><Route path="/order-confirmation" element={<OrderConfirmation/>}/><Route path="*" element={<section className="section empty-state"><p className="eyebrow">{t("404 / OFF THE BEATEN PATH")}</p><h1>{t("Nothing here. Yet.")}</h1><p>{t("Let's find your way back to the good stuff.")}</p><Link className="button primary" to="/products">{t("Explore the collection →")}</Link></section>}/></Routes></div></main><Footer/><div className="sr-only" role="status" aria-live="polite">{notice}</div></>
 }
-export default function App(){return <BrowserRouter><PreferencesProvider><CartProvider><Store/></CartProvider></PreferencesProvider></BrowserRouter>}
+export default function App(){return <BrowserRouter><PreferencesProvider><CartProvider><ComparisonProvider><Store/></ComparisonProvider></CartProvider></PreferencesProvider></BrowserRouter>}
 

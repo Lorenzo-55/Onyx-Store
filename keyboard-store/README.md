@@ -64,3 +64,7 @@ Color tokens for both themes live in `src/index.css`; component styles use these
 `src/motion.css` defines short page entrances, staggered product-grid transitions, section reveals, mobile menu transitions, theme color changes, and cart/checkout feedback. `src/hooks/useScrollReveal.ts` uses IntersectionObserver to reveal below-fold sections once; content stays visible if that API is unavailable, and focused sections are immediately visible. Product images fade after loading without hiding them while they download.
 
 All CSS animations/transitions and smooth scrolling are disabled for `prefers-reduced-motion: reduce`. Image animations also honor that preference, and scroll reveals clear immediately if the preference changes. Animation code adds no dependencies. Shopping and form actions are never delayed for animations.
+
+## Product comparison
+
+Use Compare product on any product card or details page to select up to three products. Open Compare products in the navigation to view starting prices, availability, options, and the union of their specifications. Show differences only hides matching rows; unavailable specifications are labeled Not applicable. Remove products individually or clear the selection. Selection survives reloads in local storage and continues in memory if storage is blocked. The comparison supports English, Italian, German, both themes, and a horizontally scrollable table on small screens.
