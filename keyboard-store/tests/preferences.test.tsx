@@ -7,25 +7,210 @@ import { LANGUAGE_KEY, THEME_KEY, translate } from '../src/context/preferences-c
 import { messages } from '../src/i18n/messages'
 import { productMessages } from '../src/i18n/products'
 import { products } from '../src/data/products'
-const cart=[{productId:'atlas',variantId:'sand',quantity:2}]
-function open(path='/'){window.history.replaceState({},'',path);return render(<App/>)}
-describe('theme and language preferences',()=>{
- it('switches themes and restores the saved preference after remount',async()=>{const user=userEvent.setup();localStorage.setItem(THEME_KEY,'dark');const app=open();expect(document.documentElement).toHaveAttribute('data-theme','dark');await user.click(screen.getByRole('button',{name:'Switch to light mode'}));expect(document.documentElement).toHaveAttribute('data-theme','light');expect(localStorage.getItem(THEME_KEY)).toBe('light');app.unmount();open();expect(document.documentElement).toHaveAttribute('data-theme','light');await user.click(screen.getByRole('button',{name:'Switch to dark mode'}));expect(document.documentElement).toHaveAttribute('data-theme','dark')})
- it('uses the operating system theme when no saved choice exists',()=>{vi.stubGlobal('matchMedia',vi.fn().mockReturnValue({matches:false}));open();expect(document.documentElement).toHaveAttribute('data-theme','light')})
- it('falls back safely for unsupported saved preferences',()=>{localStorage.setItem(LANGUAGE_KEY,'fr');localStorage.setItem(THEME_KEY,'invalid');open();expect(document.documentElement.lang).toBe('en');expect(document.documentElement.dataset.theme).toBe('dark')})
- it('translates the homepage, updates the document, and remembers the selected language',async()=>{const user=userEvent.setup();const app=open();await user.selectOptions(screen.getByRole('combobox',{name:'Language'}),'it');expect(screen.getByRole('heading',{level:1})).toHaveTextContent('Trova il tuo');expect(document.documentElement.lang).toBe('it');expect(document.title).toContain('Trova il tuo tipo di click.');expect(screen.getByRole('button',{name:'Passa al tema chiaro'})).toBeInTheDocument();expect(localStorage.getItem(LANGUAGE_KEY)).toBe('it');app.unmount();open('/products');expect(screen.getByRole('heading',{level:1})).toHaveTextContent('La collezione.');await user.selectOptions(screen.getByRole('combobox',{name:'Lingua'}),'de');expect(document.documentElement.lang).toBe('de');expect(screen.getByRole('heading',{level:1})).toHaveTextContent('Die Kollektion.');expect(screen.getByRole('combobox',{name:'Sprache'})).toHaveValue('de')})
- it('preserves the selected variant, cart and URL while switching language and theme',async()=>{const user=userEvent.setup();localStorage.setItem(CART_KEY,JSON.stringify(cart));open('/products/atlas?variant=sand');await user.selectOptions(screen.getByRole('combobox',{name:'Language'}),'it');expect(window.location.search).toBe('?variant=sand');expect(screen.getByRole('button',{name:/Sabbia/})).toHaveAttribute('aria-pressed','true');expect(screen.getByText(/Una tastiera compatta per ogni giorno/)).toBeInTheDocument();expect(screen.getByText('Connessione')).toBeInTheDocument();await user.click(screen.getByRole('button',{name:'Passa al tema chiaro'}));expect(JSON.parse(localStorage.getItem(CART_KEY)!)).toEqual(cart);await user.click(screen.getByRole('link',{name:'Carrello, 2 articoli'}));expect(screen.getByRole('heading',{name:'Il tuo carrello.'})).toBeInTheDocument();expect(screen.getByText(/Sabbia · 194,00/)).toBeInTheDocument();expect(screen.getByRole('button',{name:'Rimuovi Atlas 75 Sabbia'})).toBeInTheDocument()})
- it('keeps translated category links and filters tied to stable category IDs',async()=>{localStorage.setItem(LANGUAGE_KEY,'de');const user=userEvent.setup();open('/products/atlas');await user.click(within(screen.getByRole('navigation',{name:'Brotkrümelnavigation'})).getByRole('link',{name:'Tastaturen',exact:true}));expect(window.location.search).toBe('?category=Keyboards');expect(screen.getAllByRole('article')).toHaveLength(4);await user.click(screen.getByRole('button',{name:'Zubehör'}));expect(screen.getAllByRole('article')).toHaveLength(3);await user.selectOptions(screen.getByLabelText('Marke'),'All');expect(screen.getAllByRole('article')).toHaveLength(3)})
- it('updates validation errors without losing checkout fields or country selection',async()=>{const user=userEvent.setup();localStorage.setItem(CART_KEY,JSON.stringify(cart));open('/checkout');await user.type(screen.getByLabelText('First name'),'Demo');await user.selectOptions(screen.getByLabelText('Country'),'Italy');await user.click(screen.getByRole('button',{name:'Place demo order'}));await user.selectOptions(screen.getByRole('combobox',{name:'Language'}),'it');expect(screen.getByLabelText('Nome')).toHaveValue('Demo');expect(screen.getByLabelText('Paese')).toHaveValue('Italy');expect(screen.getByText('Inserisci un indirizzo email valido.')).toBeInTheDocument();expect(screen.getByRole('alert')).toHaveTextContent('Controlla i campi evidenziati');await user.selectOptions(screen.getByRole('combobox',{name:'Lingua'}),'de');expect(screen.getByLabelText('Vorname')).toHaveValue('Demo');expect(screen.getByText('Gib eine gültige E-Mail-Adresse ein.')).toBeInTheDocument();expect(screen.getByLabelText('Land')).toHaveValue('Italy')})
- it('can complete a checkout in Italian with language-specific prices and receipt',async()=>{const user=userEvent.setup();localStorage.setItem(CART_KEY,JSON.stringify(cart));localStorage.setItem(LANGUAGE_KEY,'it');open('/checkout');for(const [label,value] of [['Nome','Demo'],['Cognome','Tester'],['Indirizzo email','demo@example.com'],['Indirizzo','12 Sample Street'],['Città','Roma'],['Codice postale','00100']])await user.type(screen.getByRole('textbox',{name:label,exact:true}),value);await user.selectOptions(screen.getByLabelText('Paese'),'Italy');await user.click(screen.getByRole('checkbox'));await user.click(screen.getByRole('button',{name:'Conferma ordine dimostrativo'}));expect(screen.getByText('Il tuo ordine dimostrativo è completato.')).toBeInTheDocument();expect(screen.getByText('Sabbia')).toBeInTheDocument();expect(screen.getByText('Totale dimostrativo').parentElement).toHaveTextContent('388,00');expect(JSON.parse(localStorage.getItem(CART_KEY)!)).toEqual([])})
- it('keeps both controls working when browser storage is blocked',async()=>{vi.spyOn(Storage.prototype,'getItem').mockImplementation(()=>{throw new Error('Blocked')});vi.spyOn(Storage.prototype,'setItem').mockImplementation(()=>{throw new Error('Blocked')});const user=userEvent.setup();open();await user.click(screen.getByRole('button',{name:'Switch to light mode'}));await user.selectOptions(screen.getByRole('combobox',{name:'Language'}),'de');expect(document.documentElement.dataset.theme).toBe('light');expect(document.documentElement.lang).toBe('de');expect(screen.getByRole('heading',{level:1})).toHaveTextContent('Finde deinen')})
- it('language switches do not reset scroll or move focus to the page start',async()=>{const user=userEvent.setup();open('/products');const scroll=vi.mocked(window.scrollTo);scroll.mockClear();await user.selectOptions(screen.getByRole('combobox',{name:'Language'}),'it');expect(scroll).not.toHaveBeenCalled();expect(screen.getByRole('combobox',{name:'Lingua'})).toHaveFocus()})
- it('announces cart additions in the selected language',async()=>{localStorage.setItem(LANGUAGE_KEY,'de');const user=userEvent.setup();open('/products/atlas');await user.click(screen.getByRole('button',{name:'In den Warenkorb'}));await waitFor(()=>expect(screen.getByRole('status')).toHaveTextContent('zum Warenkorb hinzugefügt'))})
- it('supports navigation menu keyboard dismissal after translation',async()=>{localStorage.setItem(LANGUAGE_KEY,'it');const user=userEvent.setup();open();await user.click(screen.getByRole('button',{name:'Apri navigazione'}));await act(async()=>screen.getByRole('link',{name:'Tutti i prodotti'}).focus());await user.keyboard('{Escape}');expect(screen.getByRole('button',{name:'Apri navigazione'})).toHaveFocus();expect(screen.getByRole('button',{name:'Apri navigazione'})).toHaveAttribute('aria-expanded','false')})
-})
-describe('translation coverage',()=>{
- it('has complete nonempty Italian and German language entries',()=>{for(const [key,entries] of Object.entries({...messages,...productMessages})){expect(entries,key).toHaveLength(2);expect(entries[0].trim(),key).not.toBe('');expect(entries[1].trim(),key).not.toBe('')}})
- it('translates every product description and short description',()=>{for(const p of products)for(const language of ['it','de'] as const){expect(translate(language,p.description),p.id).not.toBe(p.description);expect(translate(language,p.detail),p.id).not.toBe(p.detail)}})
- it('preserves template values and falls back to English for unknown copy',()=>{expect(translate('it','Shopping bag, {count} items',{count:3})).toBe('Carrello, 3 articoli');expect(translate('de','Missing translation')).toBe('Missing translation')})
+
+const cart = [{ productId: 'atlas', variantId: 'sand', quantity: 2 }]
+
+function open(path = '/') {
+  window.history.replaceState({}, '', path)
+  return render(<App />)
+}
+
+describe('theme and language preferences', () => {
+  it('switches themes and restores the saved preference after remount', async () => {
+    const user = userEvent.setup()
+    localStorage.setItem(THEME_KEY, 'dark')
+    const app = open()
+    expect(document.documentElement).toHaveAttribute('data-theme', 'dark')
+    await user.click(screen.getByRole('button', { name: 'Switch to light mode' }))
+    expect(document.documentElement).toHaveAttribute('data-theme', 'light')
+    expect(localStorage.getItem(THEME_KEY)).toBe('light')
+    app.unmount()
+    open()
+    expect(document.documentElement).toHaveAttribute('data-theme', 'light')
+    await user.click(screen.getByRole('button', { name: 'Switch to dark mode' }))
+    expect(document.documentElement).toHaveAttribute('data-theme', 'dark')
+  })
+  it('uses the operating system theme when no saved choice exists', () => {
+    vi.stubGlobal('matchMedia', vi.fn().mockReturnValue({ matches: false }))
+    open()
+    expect(document.documentElement).toHaveAttribute('data-theme', 'light')
+  })
+  it('falls back safely for unsupported saved preferences', () => {
+    localStorage.setItem(LANGUAGE_KEY, 'fr')
+    localStorage.setItem(THEME_KEY, 'invalid')
+    open()
+    expect(document.documentElement.lang).toBe('en')
+    expect(document.documentElement.dataset.theme).toBe('dark')
+  })
+  it('translates the homepage, updates the document, and remembers the selected language', async () => {
+    const user = userEvent.setup()
+    const app = open()
+    await user.selectOptions(screen.getByRole('combobox', { name: 'Language' }), 'it')
+    expect(screen.getByRole('heading', { level: 1 })).toHaveTextContent('Trova il tuo')
+    expect(document.documentElement.lang).toBe('it')
+    expect(document.title).toContain('Trova il tuo tipo di click.')
+    expect(
+      screen.getByRole('button', { name: 'Passa al tema chiaro' }),
+    ).toBeInTheDocument()
+    expect(localStorage.getItem(LANGUAGE_KEY)).toBe('it')
+    app.unmount()
+    open('/products')
+    expect(screen.getByRole('heading', { level: 1 })).toHaveTextContent('La collezione.')
+    await user.selectOptions(screen.getByRole('combobox', { name: 'Lingua' }), 'de')
+    expect(document.documentElement.lang).toBe('de')
+    expect(screen.getByRole('heading', { level: 1 })).toHaveTextContent('Die Kollektion.')
+    expect(screen.getByRole('combobox', { name: 'Sprache' })).toHaveValue('de')
+  })
+  it('preserves the selected variant, cart and URL while switching language and theme', async () => {
+    const user = userEvent.setup()
+    localStorage.setItem(CART_KEY, JSON.stringify(cart))
+    open('/products/atlas?variant=sand')
+    await user.selectOptions(screen.getByRole('combobox', { name: 'Language' }), 'it')
+    expect(window.location.search).toBe('?variant=sand')
+    expect(screen.getByRole('button', { name: /Sabbia/ })).toHaveAttribute(
+      'aria-pressed',
+      'true',
+    )
+    expect(screen.getByText(/Una tastiera compatta per ogni giorno/)).toBeInTheDocument()
+    expect(screen.getByText('Connessione')).toBeInTheDocument()
+    await user.click(screen.getByRole('button', { name: 'Passa al tema chiaro' }))
+    expect(JSON.parse(localStorage.getItem(CART_KEY)!)).toEqual(cart)
+    await user.click(screen.getByRole('link', { name: 'Carrello, 2 articoli' }))
+    expect(screen.getByRole('heading', { name: 'Il tuo carrello.' })).toBeInTheDocument()
+    expect(screen.getByText(/Sabbia · 194,00/)).toBeInTheDocument()
+    expect(
+      screen.getByRole('button', { name: 'Rimuovi Atlas 75 Sabbia' }),
+    ).toBeInTheDocument()
+  })
+  it('keeps translated category links and filters tied to stable category IDs', async () => {
+    localStorage.setItem(LANGUAGE_KEY, 'de')
+    const user = userEvent.setup()
+    open('/products/atlas')
+    await user.click(
+      within(screen.getByRole('navigation', { name: 'Brotkrümelnavigation' })).getByRole(
+        'link',
+        { name: 'Tastaturen', exact: true },
+      ),
+    )
+    expect(window.location.search).toBe('?category=Keyboards')
+    expect(screen.getAllByRole('article')).toHaveLength(4)
+    await user.click(screen.getByRole('button', { name: 'Zubehör' }))
+    expect(screen.getAllByRole('article')).toHaveLength(3)
+    await user.selectOptions(screen.getByLabelText('Marke'), 'All')
+    expect(screen.getAllByRole('article')).toHaveLength(3)
+  })
+  it('updates validation errors without losing checkout fields or country selection', async () => {
+    const user = userEvent.setup()
+    localStorage.setItem(CART_KEY, JSON.stringify(cart))
+    open('/checkout')
+    await user.type(screen.getByLabelText('First name'), 'Demo')
+    await user.selectOptions(screen.getByLabelText('Country'), 'Italy')
+    await user.click(screen.getByRole('button', { name: 'Place demo order' }))
+    await user.selectOptions(screen.getByRole('combobox', { name: 'Language' }), 'it')
+    expect(screen.getByLabelText('Nome')).toHaveValue('Demo')
+    expect(screen.getByLabelText('Paese')).toHaveValue('Italy')
+    expect(screen.getByText('Inserisci un indirizzo email valido.')).toBeInTheDocument()
+    expect(screen.getByRole('alert')).toHaveTextContent('Controlla i campi evidenziati')
+    await user.selectOptions(screen.getByRole('combobox', { name: 'Lingua' }), 'de')
+    expect(screen.getByLabelText('Vorname')).toHaveValue('Demo')
+    expect(screen.getByText('Gib eine gültige E-Mail-Adresse ein.')).toBeInTheDocument()
+    expect(screen.getByLabelText('Land')).toHaveValue('Italy')
+  })
+  it('can complete a checkout in Italian with language-specific prices and receipt', async () => {
+    const user = userEvent.setup()
+    localStorage.setItem(CART_KEY, JSON.stringify(cart))
+    localStorage.setItem(LANGUAGE_KEY, 'it')
+    open('/checkout')
+    for (const [label, value] of [
+      ['Nome', 'Demo'],
+      ['Cognome', 'Tester'],
+      ['Indirizzo email', 'demo@example.com'],
+      ['Indirizzo', '12 Sample Street'],
+      ['Città', 'Roma'],
+      ['Codice postale', '00100'],
+    ]) {
+      await user.type(screen.getByRole('textbox', { name: label, exact: true }), value)
+    }
+    await user.selectOptions(screen.getByLabelText('Paese'), 'Italy')
+    await user.click(screen.getByRole('checkbox'))
+    await user.click(screen.getByRole('button', { name: 'Conferma ordine dimostrativo' }))
+    expect(
+      screen.getByText('Il tuo ordine dimostrativo è completato.'),
+    ).toBeInTheDocument()
+    expect(screen.getByText('Sabbia')).toBeInTheDocument()
+    expect(screen.getByText('Totale dimostrativo').parentElement).toHaveTextContent(
+      '388,00',
+    )
+    expect(JSON.parse(localStorage.getItem(CART_KEY)!)).toEqual([])
+  })
+  it('keeps both controls working when browser storage is blocked', async () => {
+    vi.spyOn(Storage.prototype, 'getItem').mockImplementation(() => {
+      throw new Error('Blocked')
+    })
+    vi.spyOn(Storage.prototype, 'setItem').mockImplementation(() => {
+      throw new Error('Blocked')
+    })
+    const user = userEvent.setup()
+    open()
+    await user.click(screen.getByRole('button', { name: 'Switch to light mode' }))
+    await user.selectOptions(screen.getByRole('combobox', { name: 'Language' }), 'de')
+    expect(document.documentElement.dataset.theme).toBe('light')
+    expect(document.documentElement.lang).toBe('de')
+    expect(screen.getByRole('heading', { level: 1 })).toHaveTextContent('Finde deinen')
+  })
+  it('language switches do not reset scroll or move focus to the page start', async () => {
+    const user = userEvent.setup()
+    open('/products')
+    const scroll = vi.mocked(window.scrollTo)
+    scroll.mockClear()
+    await user.selectOptions(screen.getByRole('combobox', { name: 'Language' }), 'it')
+    expect(scroll).not.toHaveBeenCalled()
+    expect(screen.getByRole('combobox', { name: 'Lingua' })).toHaveFocus()
+  })
+  it('announces cart additions in the selected language', async () => {
+    localStorage.setItem(LANGUAGE_KEY, 'de')
+    const user = userEvent.setup()
+    open('/products/atlas')
+    await user.click(screen.getByRole('button', { name: 'In den Warenkorb' }))
+    await waitFor(() =>
+      expect(screen.getByRole('status')).toHaveTextContent('zum Warenkorb hinzugefügt'),
+    )
+  })
+  it('supports navigation menu keyboard dismissal after translation', async () => {
+    localStorage.setItem(LANGUAGE_KEY, 'it')
+    const user = userEvent.setup()
+    open()
+    await user.click(screen.getByRole('button', { name: 'Apri navigazione' }))
+    await act(async () => screen.getByRole('link', { name: 'Tutti i prodotti' }).focus())
+    await user.keyboard('{Escape}')
+    expect(screen.getByRole('button', { name: 'Apri navigazione' })).toHaveFocus()
+    expect(screen.getByRole('button', { name: 'Apri navigazione' })).toHaveAttribute(
+      'aria-expanded',
+      'false',
+    )
+  })
 })
 
+describe('translation coverage', () => {
+  it('has complete nonempty Italian and German language entries', () => {
+    for (const [key, entries] of Object.entries({ ...messages, ...productMessages })) {
+      expect(entries, key).toHaveLength(2)
+      expect(entries[0].trim(), key).not.toBe('')
+      expect(entries[1].trim(), key).not.toBe('')
+    }
+  })
+  it('translates every product description and short description', () => {
+    for (const p of products) {
+      for (const language of ['it', 'de'] as const) {
+        expect(translate(language, p.description), p.id).not.toBe(p.description)
+        expect(translate(language, p.detail), p.id).not.toBe(p.detail)
+      }
+    }
+  })
+  it('preserves template values and falls back to English for unknown copy', () => {
+    expect(translate('it', 'Shopping bag, {count} items', { count: 3 })).toBe(
+      'Carrello, 3 articoli',
+    )
+    expect(translate('de', 'Missing translation')).toBe('Missing translation')
+  })
+})

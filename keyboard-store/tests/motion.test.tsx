@@ -3,11 +3,130 @@ import { useRef } from 'react'
 import { describe, expect, it, vi } from 'vitest'
 import ProductImage from '../src/components/ProductImage'
 import { useScrollReveal } from '../src/hooks/useScrollReveal'
-function RevealExample(){const root=useRef<HTMLElement>(null);useScrollReveal(root,'/');return <main ref={root}><section className="section" data-testid="section"><a href="/products">Collection</a></section></main>}
-describe('motion accessibility and image loading',()=>{
- it('keeps all content visible if observers are unavailable',()=>{vi.stubGlobal('IntersectionObserver',undefined);render(<RevealExample/>);expect(screen.getByTestId('section')).not.toHaveAttribute('data-scroll-reveal');expect(screen.getByRole('link',{name:'Collection'})).toBeVisible()})
- it('does not hide sections when reduced motion is preferred',()=>{const observe=vi.fn();vi.stubGlobal('IntersectionObserver',class{observe=observe;disconnect=vi.fn();unobserve=vi.fn()});vi.stubGlobal('matchMedia',()=>({matches:true}));vi.spyOn(Element.prototype,'getBoundingClientRect').mockReturnValue({top:1200} as DOMRect);render(<RevealExample/>);expect(observe).not.toHaveBeenCalled();expect(screen.getByTestId('section')).not.toHaveAttribute('data-scroll-reveal')})
- it('reveals below-fold content once and restores visibility immediately if reduced motion is enabled',()=>{let intersection:IntersectionObserverCallback=()=>{};let preferenceChange:()=>void=()=>{};const media={matches:false,addEventListener:vi.fn((_event:string,listener:()=>void)=>{preferenceChange=listener}),removeEventListener:vi.fn()},unobserve=vi.fn(),disconnect=vi.fn();vi.stubGlobal('matchMedia',()=>media);vi.stubGlobal('IntersectionObserver',class{constructor(callback:IntersectionObserverCallback){intersection=callback}observe=vi.fn();unobserve=unobserve;disconnect=disconnect});vi.spyOn(Element.prototype,'getBoundingClientRect').mockReturnValue({top:1200} as DOMRect);const view=render(<RevealExample/>);const section=screen.getByTestId('section');expect(section).toHaveAttribute('data-scroll-reveal','pending');act(()=>intersection([{target:section,isIntersecting:true} as unknown as IntersectionObserverEntry],{} as IntersectionObserver));expect(section).toHaveAttribute('data-scroll-reveal','visible');expect(unobserve).toHaveBeenCalledWith(section);act(()=>{media.matches=true;preferenceChange()});expect(section).not.toHaveAttribute('data-scroll-reveal');view.unmount();expect(disconnect).toHaveBeenCalled();expect(media.removeEventListener).toHaveBeenCalled()})
- it('fades a loaded image without delaying it, and preserves the load callback',()=>{const onLoad=vi.fn(),animate=vi.fn();render(<ProductImage src="/images/provided/atlas-sage-overview.png" fallbackSrc="/images/atlas-sage-0.svg" alt="Atlas" onLoad={onLoad}/>);const image=screen.getByRole('img',{name:'Atlas'});Object.defineProperty(image,'animate',{value:animate});fireEvent.load(image);expect(animate).toHaveBeenCalledOnce();expect(onLoad).toHaveBeenCalledOnce();expect(image).toHaveAttribute('src','/images/provided/atlas-sage-overview.png');expect(image).not.toHaveAttribute('hidden')})
- it('skips image animation under reduced motion and still handles image failure',()=>{vi.stubGlobal('matchMedia',()=>({matches:true}));const animate=vi.fn();render(<ProductImage src="/missing.png" fallbackSrc="/images/atlas-sage-0.svg" alt="Atlas"/>);const image=screen.getByRole('img',{name:'Atlas'});Object.defineProperty(image,'animate',{value:animate});fireEvent.load(image);expect(animate).not.toHaveBeenCalled();fireEvent.error(image);expect(image).toHaveAttribute('src','/images/atlas-sage-0.svg')})
+
+function RevealExample() {
+  const root = useRef<HTMLElement>(null)
+  useScrollReveal(root, '/')
+  return (
+    <main ref={root}>
+      <section className="section" data-testid="section">
+        <a href="/products">Collection</a>
+      </section>
+    </main>
+  )
+}
+
+describe('motion accessibility and image loading', () => {
+  it('keeps all content visible if observers are unavailable', () => {
+    vi.stubGlobal('IntersectionObserver', undefined)
+    render(<RevealExample />)
+    expect(screen.getByTestId('section')).not.toHaveAttribute('data-scroll-reveal')
+    expect(screen.getByRole('link', { name: 'Collection' })).toBeVisible()
+  })
+  it('does not hide sections when reduced motion is preferred', () => {
+    const observe = vi.fn()
+    vi.stubGlobal(
+      'IntersectionObserver',
+      class {
+        observe = observe
+        disconnect = vi.fn()
+        unobserve = vi.fn()
+      },
+    )
+    vi.stubGlobal('matchMedia', () => ({ matches: true }))
+    vi.spyOn(Element.prototype, 'getBoundingClientRect').mockReturnValue({
+      top: 1200,
+    } as DOMRect)
+    render(<RevealExample />)
+    expect(observe).not.toHaveBeenCalled()
+    expect(screen.getByTestId('section')).not.toHaveAttribute('data-scroll-reveal')
+  })
+  it('reveals below-fold content once and restores visibility immediately if reduced motion is enabled', () => {
+    let intersection: IntersectionObserverCallback = () => {}
+    let preferenceChange: () => void = () => {}
+    const media = {
+      matches: false,
+      addEventListener: vi.fn((_event: string, listener: () => void) => {
+        preferenceChange = listener
+      }),
+      removeEventListener: vi.fn(),
+    }
+    const unobserve = vi.fn()
+    const disconnect = vi.fn()
+    vi.stubGlobal('matchMedia', () => media)
+    vi.stubGlobal(
+      'IntersectionObserver',
+      class {
+        constructor(callback: IntersectionObserverCallback) {
+          intersection = callback
+        }
+        observe = vi.fn()
+        unobserve = unobserve
+        disconnect = disconnect
+      },
+    )
+    vi.spyOn(Element.prototype, 'getBoundingClientRect').mockReturnValue({
+      top: 1200,
+    } as DOMRect)
+    const view = render(<RevealExample />)
+    const section = screen.getByTestId('section')
+    expect(section).toHaveAttribute('data-scroll-reveal', 'pending')
+    act(() =>
+      intersection(
+        [
+          {
+            target: section,
+            isIntersecting: true,
+          } as unknown as IntersectionObserverEntry,
+        ],
+        {} as IntersectionObserver,
+      ),
+    )
+    expect(section).toHaveAttribute('data-scroll-reveal', 'visible')
+    expect(unobserve).toHaveBeenCalledWith(section)
+    act(() => {
+      media.matches = true
+      preferenceChange()
+    })
+    expect(section).not.toHaveAttribute('data-scroll-reveal')
+    view.unmount()
+    expect(disconnect).toHaveBeenCalled()
+    expect(media.removeEventListener).toHaveBeenCalled()
+  })
+  it('fades a loaded image without delaying it, and preserves the load callback', () => {
+    const onLoad = vi.fn()
+    const animate = vi.fn()
+    render(
+      <ProductImage
+        src="/images/provided/atlas-sage-overview.png"
+        fallbackSrc="/images/atlas-sage-0.svg"
+        alt="Atlas"
+        onLoad={onLoad}
+      />,
+    )
+    const image = screen.getByRole('img', { name: 'Atlas' })
+    Object.defineProperty(image, 'animate', { value: animate })
+    fireEvent.load(image)
+    expect(animate).toHaveBeenCalledOnce()
+    expect(onLoad).toHaveBeenCalledOnce()
+    expect(image).toHaveAttribute('src', '/images/provided/atlas-sage-overview.png')
+    expect(image).not.toHaveAttribute('hidden')
+  })
+  it('skips image animation under reduced motion and still handles image failure', () => {
+    vi.stubGlobal('matchMedia', () => ({ matches: true }))
+    const animate = vi.fn()
+    render(
+      <ProductImage
+        src="/missing.png"
+        fallbackSrc="/images/atlas-sage-0.svg"
+        alt="Atlas"
+      />,
+    )
+    const image = screen.getByRole('img', { name: 'Atlas' })
+    Object.defineProperty(image, 'animate', { value: animate })
+    fireEvent.load(image)
+    expect(animate).not.toHaveBeenCalled()
+    fireEvent.error(image)
+    expect(image).toHaveAttribute('src', '/images/atlas-sage-0.svg')
+  })
 })

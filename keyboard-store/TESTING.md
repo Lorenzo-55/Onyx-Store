@@ -4,7 +4,7 @@ Verified on 12 November 2026.
 
 ## Results
 
-- 71 automated tests passed across 7 files (`npm.cmd test`).
+- 75 automated tests passed across 8 files (`npm.cmd test`).
 - ESLint passed (`npm.cmd run lint`).
 - TypeScript compilation and Vite production build passed (`npm.cmd run build`).
 - Production preview HTTP smoke checks returned 200 for `/`, `/products`, `/products/atlas`, `/cart`, `/checkout`, `/order-confirmation`, and a product SVG. These checks confirm serving and SPA fallback, not rendered browser behavior or hosting configuration on Vercel/Netlify.
@@ -33,7 +33,6 @@ The site is not deployed. No real order or payment was submitted. Installed depe
 
 At widths 375, 768, and 1440 pixels, inspect the homepage, catalog/filter controls, product gallery and variant buttons, cart, and checkout. Confirm no horizontal overflow, visible focus, usable navigation, readable text, and comfortable touch targets. Complete a demo checkout using fictional details, then refresh the confirmation page. Repeat in Firefox and Chromium.
 
-
 ## Theme and language verification
 
 Added light/dark themes and English, Italian, and German language preferences. The current suite has 60 passing tests across 5 files.
@@ -44,12 +43,14 @@ Added light/dark themes and English, Italian, and German language preferences. T
 
 Lint and production build pass after the changes. Actual desktop/mobile screenshots and overflow checks remain unverified because browser access is unavailable. Review both themes in all three languages during the pending manual visual pass, especially the header, long German labels, forms, and order summary.
 
-
 ## Supplied product image verification
 
 After adding the 17 supplied images, all 66 tests across 6 files pass; lint and the production build also pass. `tests/product-images.test.tsx` verifies that all supplied files are mapped to valid products and variants, every original SVG placeholder still exists, placeholder mode resolves the original artwork, products with no supplied images retain their placeholders, failed image loads fall back without retry loops, gallery selections reset on variant changes, single-image variants work, and the homepage/cart use the correct supplied images. Actual browser rendering remains unverified.
 
-
 ## Motion verification
 
 71 tests pass across 7 files after adding motion; lint and the production build pass. `tests/motion.test.tsx` verifies visible fallback without IntersectionObserver, reduced-motion handling, reveal cleanup when preferences change, image-load callback preservation, and image-error fallback with motion disabled. Existing shopping, language, theme, and image tests continue to pass. Animation timing, smoothness, and mobile-menu rendering still need visual review in a real browser; jsdom does not render animations.
+
+## Readability and formatting verification
+
+On 15 November 2026, the source, styles, scripts, tests, and configuration were formatted with Prettier. Grouped variable declarations were separated and dense conditional logic was simplified. The CSS palette test now accepts normal formatting whitespace. All 75 tests pass, along with lint, the production build, and the formatting check. The SVG generator was executed with an in-memory output verifier: all 70 generated SVGs match the original artwork structurally, ignoring formatting whitespace. No image files were rewritten.

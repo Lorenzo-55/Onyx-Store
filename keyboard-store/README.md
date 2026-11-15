@@ -53,8 +53,6 @@ Translations live in `src/i18n/messages.ts` (interface) and `src/i18n/products.t
 
 Color tokens for both themes live in `src/index.css`; component styles use these tokens. Test coverage includes persistence, translated navigation and filtering, validation errors, a checkout in Italian, storage failure, and preservation of cart/form state during language changes.
 
-
-
 ## Supplied images
 
 17 supplied images are active for Atlas 75, Slate TKL, and Arc 98, including finish-specific galleries, cards, cart images, and the homepage hero. All original placeholders and supplied source files remain intact. Set `PRODUCT_IMAGE_MODE` to `'placeholders'` in `src/data/product-images.ts` to restore the original artwork site-wide. See `IMAGE_ASSETS.md` for the mapping and rollback instructions.
@@ -68,3 +66,14 @@ All CSS animations/transitions and smooth scrolling are disabled for `prefers-re
 ## Product comparison
 
 Use Compare product on any product card or details page to select up to three products. Open Compare products in the navigation to view starting prices, availability, options, and the union of their specifications. Show differences only hides matching rows; unavailable specifications are labeled Not applicable. Remove products individually or clear the selection. Selection survives reloads in local storage and continues in memory if storage is blocked. The comparison supports English, Italian, German, both themes, and a horizontally scrollable table on small screens.
+
+## Code formatting
+
+Source files, styles, tests, scripts, and configuration use Prettier with two-space indentation, single quotes, and a 90-character target width. EditorConfig keeps indentation and line endings consistent. Generated images, build output, dependencies, the lockfile, and the original project brief are excluded.
+
+```powershell
+npm.cmd run format
+npm.cmd run format:check
+```
+
+The first command applies formatting; the second checks formatting without modifying files. Long product descriptions and translations remain intact as text strings.

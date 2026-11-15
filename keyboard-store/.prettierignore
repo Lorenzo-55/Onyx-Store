@@ -1,0 +1,11 @@
+﻿node_modules/
+dist/
+dist-ssr/
+coverage/
+.git/
+package-lock.json
+public/images/
+src/assets/
+public/*.svg
+*.txt
+PROJECT_BRIEF.md

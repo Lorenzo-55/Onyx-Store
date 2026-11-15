@@ -4,14 +4,116 @@ import { existsSync, readFileSync } from 'node:fs'
 import { describe, expect, it } from 'vitest'
 import App from '../src/App'
 import { products } from '../src/data/products'
-import { galleryOf, placeholderImageOf, providedGalleries } from '../src/data/product-images'
+import {
+  galleryOf,
+  placeholderImageOf,
+  providedGalleries,
+} from '../src/data/product-images'
 import { CART_KEY } from '../src/lib/cart'
-function open(path:string){window.history.replaceState({},'',path);return render(<App/>)}
-describe('supplied product images',()=>{
- it('includes all 17 supplied files, correctly mapped to known products and variants',()=>{const unique=new Set<string>();for(const [productId,variants] of Object.entries(providedGalleries)){const p=products.find(p=>p.id===productId);expect(p).toBeDefined();for(const [variantId,images] of Object.entries(variants)){expect(p!.variants.some(v=>v.id===variantId)).toBe(true);for(const image of images){expect(existsSync(`public${image.src}`),image.src).toBe(true);unique.add(image.src)}}}expect(unique.size).toBe(17);const sourceMap=JSON.parse(readFileSync('public/images/provided/source-map.json','utf8').replace(/^\uFEFF/,''));expect(Object.keys(sourceMap)).toHaveLength(17)})
- it('retains every original placeholder and restores original galleries in placeholder mode',()=>{for(const p of products)for(const v of p.variants){const gallery=galleryOf(p.id,v.id,'placeholders');expect(gallery).toHaveLength(2);for(const [i,image] of gallery.entries()){expect(image.kind).toBe('placeholder');expect(image.src).toBe(placeholderImageOf(p.id,v.id,i));expect(existsSync(`public${image.src}`)).toBe(true)}}})
- it('keeps placeholders for products without supplied images',()=>{expect(galleryOf('forma','forest').every(image=>image.kind==='placeholder')).toBe(true);expect(galleryOf('atlas','sage')[0].src).toContain('/provided/atlas-sage-overview.png')})
- it('uses supplied images on the homepage and falls back if a file cannot load',()=>{open('/');const images=screen.getAllByRole('img',{name:'Atlas 75 — product image'});expect(images).toHaveLength(2);for(const image of images)expect(image).toHaveAttribute('src','/images/provided/atlas-sage-overview.png');fireEvent.error(images[0]);expect(images[0]).toHaveAttribute('src','/images/atlas-sage-0.svg');fireEvent.error(images[0]);expect(images[0]).toHaveAttribute('src','/images/atlas-sage-0.svg')})
- it('shows all gallery views and resets to the correct overview when variants change',async()=>{const user=userEvent.setup();open('/products/atlas?variant=sand');await user.click(screen.getByRole('button',{name:'Show image 5: Variant overview'}));expect(screen.getByRole('img',{name:'Atlas 75, Sand — Variant overview'})).toHaveAttribute('src','/images/provided/atlas-variants.png');await user.click(screen.getByRole('button',{name:'Sage',exact:true}));expect(screen.getByRole('img',{name:'Atlas 75, Sage — Overview'})).toHaveAttribute('src','/images/provided/atlas-sage-overview.png');expect(screen.getByRole('button',{name:'Show image 1: Overview'})).toHaveAttribute('aria-pressed','true');expect(screen.queryByRole('button',{name:'Show image 5: Variant overview'})).not.toBeInTheDocument();await user.click(screen.getByRole('button',{name:'Show image 3: Detail view'}));expect(screen.getByRole('img',{name:'Atlas 75, Sage — Detail view'})).toHaveAttribute('src','/images/provided/atlas-sage-detail.png')})
- it('handles a single-image variant and uses matching images in the cart',()=>{const app=open('/products/slate?variant=silver');expect(screen.getByRole('button',{name:'Show image 1: Overview'})).toBeInTheDocument();expect(screen.queryByRole('button',{name:/Show image 2/})).not.toBeInTheDocument();expect(screen.getByRole('img',{name:'Slate TKL, Silver — Overview'})).toHaveAttribute('src','/images/provided/slate-silver-overview.png');app.unmount();localStorage.setItem(CART_KEY,JSON.stringify([{productId:'atlas',variantId:'sand',quantity:1}]));open('/cart');expect(screen.getByRole('img',{name:'Atlas 75',exact:true})).toHaveAttribute('src','/images/provided/atlas-sand-overview.png')})
+
+function open(path: string) {
+  window.history.replaceState({}, '', path)
+  return render(<App />)
+}
+
+describe('supplied product images', () => {
+  it('includes all 17 supplied files, correctly mapped to known products and variants', () => {
+    const unique = new Set<string>()
+    for (const [productId, variants] of Object.entries(providedGalleries)) {
+      const p = products.find((p) => p.id === productId)
+      expect(p).toBeDefined()
+      for (const [variantId, images] of Object.entries(variants)) {
+        expect(p!.variants.some((v) => v.id === variantId)).toBe(true)
+        for (const image of images) {
+          expect(existsSync(`public${image.src}`), image.src).toBe(true)
+          unique.add(image.src)
+        }
+      }
+    }
+    expect(unique.size).toBe(17)
+    const sourceMap = JSON.parse(
+      readFileSync('public/images/provided/source-map.json', 'utf8').replace(
+        /^\uFEFF/,
+        '',
+      ),
+    )
+    expect(Object.keys(sourceMap)).toHaveLength(17)
+  })
+  it('retains every original placeholder and restores original galleries in placeholder mode', () => {
+    for (const p of products) {
+      for (const v of p.variants) {
+        const gallery = galleryOf(p.id, v.id, 'placeholders')
+        expect(gallery).toHaveLength(2)
+        for (const [i, image] of gallery.entries()) {
+          expect(image.kind).toBe('placeholder')
+          expect(image.src).toBe(placeholderImageOf(p.id, v.id, i))
+          expect(existsSync(`public${image.src}`)).toBe(true)
+        }
+      }
+    }
+  })
+  it('keeps placeholders for products without supplied images', () => {
+    expect(
+      galleryOf('forma', 'forest').every((image) => image.kind === 'placeholder'),
+    ).toBe(true)
+    expect(galleryOf('atlas', 'sage')[0].src).toContain(
+      '/provided/atlas-sage-overview.png',
+    )
+  })
+  it('uses supplied images on the homepage and falls back if a file cannot load', () => {
+    open('/')
+    const images = screen.getAllByRole('img', { name: 'Atlas 75 — product image' })
+    expect(images).toHaveLength(2)
+    for (const image of images) {
+      expect(image).toHaveAttribute('src', '/images/provided/atlas-sage-overview.png')
+    }
+    fireEvent.error(images[0])
+    expect(images[0]).toHaveAttribute('src', '/images/atlas-sage-0.svg')
+    fireEvent.error(images[0])
+    expect(images[0]).toHaveAttribute('src', '/images/atlas-sage-0.svg')
+  })
+  it('shows all gallery views and resets to the correct overview when variants change', async () => {
+    const user = userEvent.setup()
+    open('/products/atlas?variant=sand')
+    await user.click(
+      screen.getByRole('button', { name: 'Show image 5: Variant overview' }),
+    )
+    expect(
+      screen.getByRole('img', { name: 'Atlas 75, Sand — Variant overview' }),
+    ).toHaveAttribute('src', '/images/provided/atlas-variants.png')
+    await user.click(screen.getByRole('button', { name: 'Sage', exact: true }))
+    expect(
+      screen.getByRole('img', { name: 'Atlas 75, Sage — Overview' }),
+    ).toHaveAttribute('src', '/images/provided/atlas-sage-overview.png')
+    expect(
+      screen.getByRole('button', { name: 'Show image 1: Overview' }),
+    ).toHaveAttribute('aria-pressed', 'true')
+    expect(
+      screen.queryByRole('button', { name: 'Show image 5: Variant overview' }),
+    ).not.toBeInTheDocument()
+    await user.click(screen.getByRole('button', { name: 'Show image 3: Detail view' }))
+    expect(
+      screen.getByRole('img', { name: 'Atlas 75, Sage — Detail view' }),
+    ).toHaveAttribute('src', '/images/provided/atlas-sage-detail.png')
+  })
+  it('handles a single-image variant and uses matching images in the cart', () => {
+    const app = open('/products/slate?variant=silver')
+    expect(
+      screen.getByRole('button', { name: 'Show image 1: Overview' }),
+    ).toBeInTheDocument()
+    expect(screen.queryByRole('button', { name: /Show image 2/ })).not.toBeInTheDocument()
+    expect(
+      screen.getByRole('img', { name: 'Slate TKL, Silver — Overview' }),
+    ).toHaveAttribute('src', '/images/provided/slate-silver-overview.png')
+    app.unmount()
+    localStorage.setItem(
+      CART_KEY,
+      JSON.stringify([{ productId: 'atlas', variantId: 'sand', quantity: 1 }]),
+    )
+    open('/cart')
+    expect(screen.getByRole('img', { name: 'Atlas 75', exact: true })).toHaveAttribute(
+      'src',
+      '/images/provided/atlas-sand-overview.png',
+    )
+  })
 })
