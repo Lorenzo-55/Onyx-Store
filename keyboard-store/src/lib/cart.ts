@@ -22,6 +22,7 @@ export function normalizeCart(value: unknown): CartLine[] {
     const existing = lines.find(
       (l) => l.productId === productId && l.variantId === variantId,
     )
+    // Merge duplicate variants before capping their combined quantity to stock.
     const capped = Math.min(v.stock, Math.floor(quantity) + (existing?.quantity || 0))
     if (existing) existing.quantity = capped
     else lines.push({ productId, variantId, quantity: capped })

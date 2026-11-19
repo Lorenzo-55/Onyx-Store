@@ -31,6 +31,7 @@ export function validateCheckout(f: CheckoutFields): CheckoutErrors {
     errors.email = 'Enter a valid email address.'
   if (!countries.includes(f.country as (typeof countries)[number]))
     errors.country = 'Choose a demo shipping country.'
+  // Postal formats follow the selected shipping country; validate trimmed input below.
   const patterns: Record<string, RegExp> = {
     Germany: /^\d{5}$/,
     Italy: /^\d{5}$/,
