@@ -29,6 +29,7 @@ export function useScrollReveal(root: RefObject<HTMLElement | null>, route: stri
         },
         { threshold: 0.06, rootMargin: '0px 0px -24px 0px' },
       )
+      // Leave sections already in view visible when the effect starts.
       sections.forEach((section) => {
         if (section.getBoundingClientRect().top >= window.innerHeight) {
           section.setAttribute('data-scroll-reveal', 'pending')

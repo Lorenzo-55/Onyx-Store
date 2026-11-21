@@ -34,6 +34,7 @@ export function validateReceipt(value: unknown): DemoOrder | null {
       unitPrice: l.unitPrice,
     })
   }
+  // Recompute totals from validated lines before accepting the saved receipt.
   const subtotal = lines.reduce((sum, l) => sum + l.quantity * l.unitPrice, 0)
   const shipping = subtotal >= 150 ? 0 : 9
   if (

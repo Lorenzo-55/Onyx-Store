@@ -5,6 +5,7 @@ import { COMPARISON_KEY, COMPARISON_LIMIT, ComparisonContext } from './compariso
 function readSelection(): string[] {
   try {
     const saved: unknown = JSON.parse(localStorage.getItem(COMPARISON_KEY) || '[]')
+    // Restore only distinct, known products within the comparison limit.
     return Array.isArray(saved)
       ? [
           ...new Set(
