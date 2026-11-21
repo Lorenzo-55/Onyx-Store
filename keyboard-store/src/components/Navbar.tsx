@@ -41,6 +41,7 @@ export default function Navbar() {
             ['Keyboards', '/products?category=Keyboards'],
             ['Keycaps', '/products?category=Keycaps'],
             ['Switches', '/products?category=Switches'],
+            ['Sound studio', '/switch-simulator'],
           ].map(([label, to]) => (
             <Link
               key={label}

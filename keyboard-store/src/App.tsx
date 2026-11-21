@@ -1,5 +1,6 @@
 import ComparisonProvider from './context/ComparisonProvider'
 import Compare from './pages/Compare'
+import SwitchSoundSimulator from './pages/SwitchSoundSimulator'
 import { useScrollReveal } from './hooks/useScrollReveal'
 import PreferencesProvider from './context/PreferencesProvider'
 import { usePreferences } from './context/preferences-context'
@@ -36,6 +37,7 @@ function Store() {
             '/': 'Find your kind of click.',
             '/products': 'The collection',
             '/compare': 'Compare products',
+            '/switch-simulator': 'Switch Sound Simulator',
             '/cart': 'Your bag',
             '/checkout': 'Demo checkout',
             '/order-confirmation': 'Demo order complete',
@@ -68,6 +70,7 @@ function Store() {
             <Route path="/products" element={<Catalog />} />
             <Route path="/products/:id" element={<ProductDetails />} />
             <Route path="/compare" element={<Compare />} />
+            <Route path="/switch-simulator" element={<SwitchSoundSimulator />} />
             <Route path="/cart" element={<Cart />} />
             <Route path="/checkout" element={<Checkout />} />
             <Route path="/order-confirmation" element={<OrderConfirmation />} />
