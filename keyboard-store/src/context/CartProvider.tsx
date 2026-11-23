@@ -9,6 +9,7 @@ function readCart(): CartLine[] {
   try {
     const stored = localStorage.getItem(CART_KEY)
     if (stored !== null) return normalizeCart(JSON.parse(stored))
+    // Migrate legacy product quantities to each product's first variant.
     const old: unknown = JSON.parse(localStorage.getItem('onyx-cart') || '{}')
     if (!old || typeof old !== 'object') return []
     return normalizeCart(
@@ -35,6 +36,7 @@ export default function CartProvider({ children }: { children: ReactNode }) {
     }
   }, [lines])
   useEffect(() => {
+    // Storage events keep this tab in sync with cart edits made in other tabs.
     const sync = (event: StorageEvent) => {
       if (event.key === CART_KEY) {
         try {

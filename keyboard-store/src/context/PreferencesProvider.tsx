@@ -58,6 +58,7 @@ export default function PreferencesProvider({ children }: { children: ReactNode 
     [language],
   )
   const money = useCallback(
+    // Language changes the number format while prices remain denominated in USD.
     (n: number) =>
       new Intl.NumberFormat(LOCALES[language], {
         style: 'currency',
